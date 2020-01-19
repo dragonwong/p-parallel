@@ -1,10 +1,10 @@
 # p-parallel
 
-[![npm](https://img.shields.io/npm/v/p-parallel.svg?maxAge=60)](https://www.npmjs.com/package/p-parallel) [![npm](https://img.shields.io/npm/dt/p-parallel.svg?maxAge=60)](https://www.npmjs.com/package/p-parallel)
+[![npm](https://img.shields.io/npm/v/p-parallel.svg?maxAge=60)](https://www.npmjs.com/package/p-parallel) [![npm](https://img.shields.io/npm/dt/p-parallel.svg?maxAge=60)](https://www.npmjs.com/package/p-parallel) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/dragonwong/p-parallel/master/LICENSE)
 
 [English](./README.md) | 中文
 
-Make promises run in parallel with a limit amount.
+让 promise 在有限的并发数下运行。
 
 ## Start
 
