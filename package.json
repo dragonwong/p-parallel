@@ -1,0 +1,24 @@
+{
+  "name": "p-parallel",
+  "version": "1.0.0",
+  "description": "Make promises run in parallel with a limit amount.",
+  "keywords": [
+    "promis",
+    "promises",
+    "parallel",
+    "limit"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dragonwong/p-parallel"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "node ./test/index"
+  },
+  "author": {
+    "name": "wangdagen"
+  },
+  "license": "ISC",
+  "homepage": "https://github.com/dragonwong/p-parallel#readme"
+}
