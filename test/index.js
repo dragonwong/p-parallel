@@ -27,4 +27,6 @@ function p3() {
   return task('p3', 2000).catch(data => data);
 }
 
-pParallel([p1, p2, p3], 2).then(res => console.log('success', res), res => console.log('fail', res));
+const taskArr = new Array(160).fill(1).map((item, goodIndex) => () => task(`p${goodIndex}`, Math.random() * 2000));
+
+pParallel(taskArr, 40).then(res => console.log('success', res), res => console.log('fail', res));

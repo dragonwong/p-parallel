@@ -1,6 +1,6 @@
 {
   "name": "p-parallel",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Make promises run in parallel with a limit amount.",
   "keywords": [
     "promis",
