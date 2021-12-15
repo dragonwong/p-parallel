@@ -6,41 +6,27 @@
 
 让 promise 在有限的并发数下运行。
 
-## Start
+## 开始
 
 ```
-npm install p-parallel
+npm install p-parallel --save
 ```
 
-## Usage
+## 用法
 
-`pParallel(promiseArr, parallelLimit)` 方法返回一个独立的 `Promise` 实例，此实例会在 `parallelLimit` 控制的最大并发数的约束下，并发异步执行 `promiseArr` 参数内所有 promise，在所有 promise 都完成（resolved）或没有 promise 时，回调完成（resolve），成功的结果是所有 promise 的结果；如果有一个 promise 失败（rejected）时，回调失败（reject），失败原因的是第一个失败的 promise 的结果。
+`pParallel(functionArr, parallelLimit)`
+
+- `functionArr`：Array，函数数组，所有函数返回值为 promise。
+- `parallelLimit`：Number，最大并发数。
+
+方法返回一个独立的 `Promise` 实例，此实例会在 `parallelLimit` 控制的最大并发数的约束下，并发执行 `functionArr` 参数的所有函数，在所有函数内的 promise 都完成（resolved）时，回调完成（resolve），成功的结果是所有 promise 的结果；如果有一个 promise 失败（rejected）时，回调失败（reject），失败原因的是第一个失败的 promise 的结果。
+
+此方法在有限资源的条件下使用并发很有用，比如说需要有节制地进行并发请求。
 
 ### 和 `Promise.all()` 的区别
 
-`Promise.all(promiseArr)` 并发异步执行 `promiseArr` 参数内所有的 promise。而 `pParallel(promiseArr, parallelLimit)` 通过 `parallelLimit` 控制了最大并发数，并按照先进先出的顺序执行。
-
-## 语法
-
-`pParallel(promiseArr, parallelLimit)`
-
-### 参数
-
-#### `promiseArr`
-
-由 promises 组成的数组。
-
-#### `parallelLimit`
-
-最大并发数。
-
-### 返回追
-
-和 `Promise.all()` 一致。
-
-## 说明
-
-此方法在有限资源的条件下使用并发很有用，比如说需要有节制地进行并发请求。
+- `Promise.all()` 方法接收一个 promise 的 iterable 类型，而 `pParallel` 接受一个函数数组。
+- `Promise.all(Promise)` 并发异步执行 `functionArr` 参数内所有的 promise。而 `pParallel(functionArr, parallelLimit)` 通过 `parallelLimit` 控制了最大并发数，并按照先进先出的顺序执行。
 
 ## 示例
 
@@ -53,14 +39,14 @@ function task(data, delay, success = true) {
       if (success) {
         resolve(data);
       } else {
-        reject(data)
+        reject(data);
       }
     }, delay);
   });
 }
 
-function test(promiseArr) {
-  pParallel(promiseArr, 2).then(res => console.log('success:', res), res => console.log('fail:', res));
+function test(functionArr) {
+  pParallel(functionArr, 2).then(res => console.log('success:', res), res => console.log('fail:', res));
 }
 
 function success1() {
@@ -89,7 +75,7 @@ test([success1, success2, fail]);
 
 ### 如何兜住异常？
 
-有时我们需要兜住异常情况，保证 `promiseArr` 里的 promise 能够全部得到执行。这时我们可以使用 `.catch`。
+有时我们需要兜住异常情况，保证 `functionArr` 里的 promise 能够全部得到执行。这时我们可以使用 `.catch`。
 
 ```js
 const pParallel = require('p-parallel');
@@ -106,8 +92,8 @@ function task(data, delay, success = true) {
   });
 }
 
-function test(promiseArr) {
-  pParallel(promiseArr, 2).then(res => console.log('success:', res), res => console.log('fail:', res));
+function test(functionArr) {
+  pParallel(functionArr, 2).then(res => console.log('success:', res), res => console.log('fail:', res));
 }
 
 function success1() {

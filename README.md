@@ -9,38 +9,24 @@ Make promises run in parallel with a limit amount.
 ## Start
 
 ```
-npm install p-parallel
+npm install p-parallel --save
 ```
 
 ## Usage
 
-The `pParallel(promiseArr, parallelLimit)` method returns a single `Promise`. This promise will run all of the promises passed as `promiseArr` in parallel asynchronously under the control of the max amount of running promises by `parallelLimit`. This promise fulfills when all of the promises in `promiseArr` have been fulfilled or when the `promiseArr` contains no promises. It rejects with the reason of the first promise that rejects.
+`pParallel(functionArr, parallelLimit)`
+
+- `functionArr`：Array，an array of functions those return a promise.
+- `parallelLimit`：Number，the max amount of running promises in parallel.
+
+The method returns a single `Promise`. This promise will run all of the functions passed as `functionArr` in parallel asynchronously under the control of the max amount of running promises by `parallelLimit`. This promise fulfills when all of the promises returned by functions in `functionArr` have been fulfilled. It rejects with the reason of the first promise that rejects.
+
+This method can be useful for do something in parallel with limited source, such as sending requests in parallel with a limit amount.
 
 ### Different from `Promise.all()`
 
-While `Promise.all(promiseArr)` runs all the promises in `promiseArr` in parallel asynchronously, `pParallel(promiseArr, parallelLimit)` runs under the control of the max amount of running promises by `parallelLimit` and in the order of FIFO.
-
-## Syntax
-
-`pParallel(promiseArr, parallelLimit)`
-
-### Parameters
-
-#### `promiseArr`
-
-An array of promises.
-
-#### `parallelLimit`
-
-The max amount of running promises in parallel.
-
-### Return value
-
-Same as `Promise.all()`.
-
-## Description
-
-This method can be useful for do something in parallel with limited source, such as sending requests in parallel with a limit amount.
+- While `Promise.all()` takes an iterable of promises as an input, while `pParallel()` takes an array of functions those return a promise.
+- While `Promise.all(promiseArr)` runs all the promises in `promiseArr` in parallel asynchronously, `pParallel(promiseArr, parallelLimit)` runs under the control of the max amount of running promises by `parallelLimit` and in the order of FIFO.
 
 ## Example
 
@@ -53,14 +39,14 @@ function task(data, delay, success = true) {
       if (success) {
         resolve(data);
       } else {
-        reject(data)
+        reject(data);
       }
     }, delay);
   });
 }
 
-function test(promiseArr) {
-  pParallel(promiseArr, 2).then(res => console.log('success:', res), res => console.log('fail:', res));
+function test(functionArr) {
+  pParallel(functionArr, 2).then(res => console.log('success:', res), res => console.log('fail:', res));
 }
 
 function success1() {
@@ -89,7 +75,7 @@ test([success1, success2, fail]);
 
 ### How to catch fail?
 
-Sometimes, we need to catch exceptions to keep all promises in `promiseArr` done. We can use `.catch`.
+Sometimes, we need to catch exceptions to keep all promises in `functionArr` done. We can use `.catch`.
 
 ```js
 const pParallel = require('p-parallel');
@@ -106,8 +92,8 @@ function task(data, delay, success = true) {
   });
 }
 
-function test(promiseArr) {
-  pParallel(promiseArr, 2).then(res => console.log('success:', res), res => console.log('fail:', res));
+function test(functionArr) {
+  pParallel(functionArr, 2).then(res => console.log('success:', res), res => console.log('fail:', res));
 }
 
 function success1() {
